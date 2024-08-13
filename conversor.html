@@ -1,0 +1,67 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversor de Moedas</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="index.html">Tools Suite</a>
+    </nav>
+    <div class="container mt-5">
+        <h1 class="text-center">Conversor de Moedas</h1>
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <form id="conversorForm">
+                    <div class="form-group">
+                        <label for="valor">Valor:</label>
+                        <input type="number" class="form-control" id="valor" name="valor" placeholder="Digite o valor a converter">
+                    </div>
+                    <div class="form-group">
+                        <label for="moedaOrigem">Moeda de Origem:</label>
+                        <select class="form-control" id="moedaOrigem" name="moedaOrigem">
+                            <option value="BRL">BRL</option>
+                            <option value="USD">USD</option>
+                            <option value="EUR">EUR</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="moedaDestino">Moeda de Destino:</label>
+                        <select class="form-control" id="moedaDestino" name="moedaDestino">
+                            <option value="BRL">BRL</option>
+                            <option value="USD">USD</option>
+                            <option value="EUR">EUR</option>
+                        </select>
+                    </div>
+                    <button type="button" class="btn btn-success btn-block" onclick="converterMoeda()">Converter</button>
+                </form>
+                <p class="text-center mt-4" id="resultadoConversao"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function converterMoeda() {
+            const valor = document.getElementById('valor').value;
+            const moedaOrigem = document.getElementById('moedaOrigem').value;
+            const moedaDestino = document.getElementById('moedaDestino').value;
+
+            // Fetching exchange rate from an API
+            const response = await fetch(`https://api.exchangerate-api.com/v4/latest/${moedaOrigem}`);
+            const data = await response.json();
+            const taxa = data.rates[moedaDestino];
+            
+            const valorConvertido = valor * taxa;
+            document.getElementById('resultadoConversao').innerText = `Valor Convertido: ${valorConvertido.toFixed(2)}`;
+        }
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
